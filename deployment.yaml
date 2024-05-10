@@ -1,25 +1,36 @@
-- name: Build & Deploy Docker  Container
+- name: Build & Deploy Docker Container
   hosts: dockerservers
   gather_facts: false
   remote_user: root
   tasks:
-    - name: Copy the files to remote server
-      become: true
-      copy:
-        src: /var/lib/jenkins/workspaces/ansible-jenkins-pipeline
-        dest: ~/project
-        remote_src: true
+    - name: Stopping Docker Container
+      docker_container:
+        name: portfolio-container
+        image: portfolio:latest
+        state: stopped
+
+    - name: Removing Docker Container
+      docker_container:
+        name: portfolio-container
+        image: portfolio:latest
+        state: absent
+
+    - name: Removing  Docker Image
+      docker_image:
+        name: portfolio:latest
+        state: absent
 
     - name: Building Docker Image
       docker_image:
         name: portfolio:latest
+        source: build
         build:
-          path: ~/project
+          path: ~/project/
         state: present
 
-    - name: Creating The condainer
+    - name: Creating The Container
       docker_container:
-        name: portfolio
+        name: portfolio-container
         image: portfolio:latest
         ports:
           - "80:80"
