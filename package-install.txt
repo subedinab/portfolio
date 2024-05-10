@@ -1,0 +1,53 @@
+
+For Jenkin Installation
+    First install java
+        - sudo apt install openjdk-17-jre
+
+     Jenkin Installation
+
+        - sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+            https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+            echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
+            https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+            /etc/apt/sources.list.d/jenkins.list > /dev/null
+            sudo apt-get update
+            sudo apt-get install jenkins   
+
+      to check running status of jenkin 
+            - sudo systemctl status Jenkins
+
+For Docker Installation Create New Ec2 Instance
+        # Add Docker's official GPG key:
+            sudo apt-get update
+            sudo apt-get install ca-certificates curl
+            sudo install -m 0755 -d /etc/apt/keyrings
+            sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+            sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+            # Add the repository to Apt sources:
+            echo \
+            "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+            $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+            sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+            sudo apt-get update
+
+        Install Docker 
+            sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+
+ TO install Ansible  ( In same jenkkins running Ec2 instance)
+            - sudo apt update \
+              sudo apt install software-properties-common \
+              sudo add-apt-repository --yes --update ppa:ansible/ansible \
+              sudo apt install ansible         
+
+ There will be an error if you run docker command in docker Ec2 instance.Before to do :
+        - sudo usermod -aG docker ubuntu 
+                                ( Here ubuntu is my usename )
+        - newGrp docker 
+      now you can run docker command 
+
+
+Now in jenkin Ec2
+- sudo apt install python3-pip
+- pip install docker  
